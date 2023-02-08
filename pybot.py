@@ -5,23 +5,30 @@ import time
 import re
 
 # Telegram bot token and chat ID
-bot_token = "5773081826:AAFoVqcMm6UuA1VAPNyrqG4NQpPajV2lSc8"
-chat_id = "579397885"
+bot_token = "bot_token_here"
+chat_id = "chat_id_for_a_specific_user"
 
 # Linux command to run on startup
-command = "nohup cloudflared  --url localhost > gh.txt &"
+command = "nohup {command here} > gh.txt &"   #enter linux command here 
 
 # File to save command output to
 output_file = "gh.txt"
 
 def check_internet_availability():
     try:
-        # Connect to the Google DNS server to check internet availability
-        socket.gethostbyname("1.1.1.1")
+        socket.create_connection(("1.1.1.1", 53))
         return True
-    except socket.gaierror:
-        return False
+    except OSError:
+        pass
+    return False
 
+def countdown(t):
+    while t:
+        
+        time_left = "Checking for internet availability in next {:02d} secs::".format(t)
+        print(time_left, end="\r")
+        time.sleep(1)
+        t -= 1
 
 while True:
     if check_internet_availability():
@@ -46,6 +53,9 @@ while True:
                 print(message)
             except Exception as e:
                 print(f"An error occurred while sending the message: {e}")
+            exit()
     else:
-        print("No internet connection, trying again in 10 seconds...")
-        time.sleep(10)
+        countdown(20)
+        print("\r")
+        print("Still not internet:(\nChecking again.")
+
