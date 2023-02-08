@@ -35,7 +35,6 @@ while True:
         # Run command and save output to file
         try:
             subprocess.run(command, shell=True)
-
         except Exception as e:
             requests.post(f"https://api.telegram.org/bot{bot_token}/sendMessage",json={"chat_id": chat_id,"text": e})
         else:
